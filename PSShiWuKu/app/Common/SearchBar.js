@@ -6,6 +6,8 @@
 import React, { PureComponent } from 'react'
 import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, Keyboard, propTypes } from 'react-native'
 
+import Color from './../Config/Color';
+
 class SearchBar extends PureComponent {
 
     static propTypes = {
@@ -59,17 +61,22 @@ class SearchBar extends PureComponent {
             <View style={[styles.container, this.props.style]}>
                 <View style={styles.inputContainer}>
                     <Image
-                        style={styles.icon}
-                        source={require('./../Images/Home/search_icon.png')}
+                        style={[styles.icon, {marginLeft: 10}]}
+                        source={require('./../Images/ic_feed_search.png')}
                     />
                     <TextInput
                         ref='input'
                         style={styles.input}
                         placeholder={this.props.text}
+                        placeholderTextColor={Color.kMainColor}
                         returnKeyType='search'
                         onSubmitEditing={this.onSubmitEditing.bind(this)}
                         onChangeText={(text) => { this.onChangeText(text) }}
                         underlineColorAndroid='transparent'
+                    />
+                    <Image
+                        style={styles.icon}
+                        source={require('./../Images/ic_libary_scan.png')}
                     />
                 </View>
                 {
@@ -95,19 +102,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: 7,
+        // backgroundColor: 'white'
     },
     inputContainer: {
         flex: 1,
-        height: 32,
+        height: 40,
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#e4e4e4',
-        borderRadius: 10,
+        borderRadius: 8,
     },
     icon: {
-        marginLeft: 10,
+        // marginLeft: 10,
         width: 21,
         height: 21,
+        marginRight: 10
     },
     cancelBtn: {
         width: 55,
@@ -120,8 +129,8 @@ const styles = StyleSheet.create({
     },
     input: {
         flex: 1,
-        marginHorizontal: 5,
-        fontSize: 15
+        // marginHorizontal: 2,
+        fontSize: 14,
     }
 });
 

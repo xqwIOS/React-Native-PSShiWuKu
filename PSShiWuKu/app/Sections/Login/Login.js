@@ -38,10 +38,14 @@ export default class extends PureComponent {
     render() {
         return (
             <View style={styles.container}>
+            {
+                /*
                 <StatusBar
                     backgroundColor="blue"
                     barStyle="light-content"
                 />
+                */
+            }
                 <Text style={{textAlign: 'center', marginTop: 40}}>不用注册，用以下账号直接登录</Text>
                 <View style={styles.accountContainerStyle}>
                     {

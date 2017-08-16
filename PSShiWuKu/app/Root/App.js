@@ -179,7 +179,7 @@ const Navigator = StackNavigator({
     Tab: {
         screen: Tab
     },
-    LogScreen: {
+    LoginScreen: {
         screen: Login
     },
     SplashScreen: {

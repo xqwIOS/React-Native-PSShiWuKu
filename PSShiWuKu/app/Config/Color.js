@@ -2,9 +2,9 @@
 import React, { Component } from 'react';
 
 export default {
-  kMainColor: 'orange',
+  kMainColor: '#e78a56',
   navigationBarBGColor:'#06C1AE',
-  kBgColor: '#f3f3f3',
+  kBgColor: '#f6f6f6',
   kSeparatorColor: '#ddd',
   theme: '',
   background: '#f5f5f5',

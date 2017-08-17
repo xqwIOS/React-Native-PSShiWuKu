@@ -64,8 +64,8 @@ export default class extends Component {
     }
 
     loginAction() {
-        alert('登录');
-        // this.props.navigation.navigate('LoginScreen');
+        // alert('登录');
+        this.props.navigation.navigate('LoginScreen');
     }
 
     onPressCell() {

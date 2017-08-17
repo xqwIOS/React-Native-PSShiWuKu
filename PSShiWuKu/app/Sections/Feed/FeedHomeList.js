@@ -1,7 +1,9 @@
 /**
  * Created by 思思 on 17/5/7.
  */
-import React, { Component } from 'react';
+import React, {
+    Component
+} from 'react';
 import {
     AppRegistry,
     StyleSheet,
@@ -16,13 +18,22 @@ import Color from './../../Config/Color';
 import Space from './../../Config/Space';
 
 var dataArr = [];
+var temp = 0
+
+const itemSpace = 10;
+const itemWidth = (Space.kScreenWidth - itemSpace * 3) / 2;
+const itemHeght = 80;
 
 export default class extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [],
+            dataList: [
+                ["1", "2"],
+                ["3", "4"],
+                ["5", "6"]
+            ],
             refreshing: false,
         }
 
@@ -33,7 +44,7 @@ export default class extends Component {
 
     render() {
         return (
-           <View style={styles.container}>
+            <View style={styles.container}>
                 <FlatList
                     data={this.state.dataList}
                     keyExtractor={this.keyExtractor}
@@ -41,26 +52,41 @@ export default class extends Component {
                     refreshing={this.state.refreshing}
                     ListHeaderComponent={this.renderHeader}
                     renderItem={this.renderCell}
+                    ItemSeparatorComponent = {() =>{
+                        return(
+                        <View style={{flex:1,height:10}}/>
+                        );
+                    }}
                 />
             </View>
         );
     }
 
     renderCell(info) {
-        return(
-            <FeedHomeListCell key='1' tipTitle={info.title} subTitle={info.description}>
-            </FeedHomeListCell>
+        console.log(info.index);
+        temp++;
+        return (
+            <View key = {'cell'+info.index} style={{flex:1,height:itemHeght,backgroundColor:'red'}}>
+                {
+                <FeedHomeListCell
+                    itemList = {info}
+                     />}
+            </View>
+
         )
     }
 
     keyExtractor(item, index) {
-        return item.id;
+
+        return 'flat'+index;
     }
 
     componentDidMount() {
         // 视图一进来就进行刷新
-        this.setState({ refreshing: true })
-        // this.requestData()
+        this.setState({
+                refreshing: false
+            })
+            // this.requestData()
     }
 
     // 数据请求
@@ -89,18 +115,8 @@ export default class extends Component {
         }
     }
 }
-
-const FeedHomeListCell = ({
-    imageName,
-    tipTitle,
-    subTitle,
-    nickImageName,
-    nickName,
-    zanCount
-}) => {
-    return (
-        <View style={styles.cellStyle}>
-            <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}></Image>
+/*
+ <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}></Image>
             <View>
                 <Text>{tipTitle}</Text>
                 <Text>{subTitle}</Text>
@@ -110,6 +126,28 @@ const FeedHomeListCell = ({
                 <View style={styles.leftViewStyle}></View>
                 <View style={styles.rightViewStyle}></View>
             </View>
+*/
+const FeedHomeListCell = ({
+    imageName,
+    tipTitle,
+    subTitle,
+    nickImageName,
+    nickName,
+    zanCount,
+    itemList
+}) => {
+    console.log(itemList);
+    let views = [];
+    for(let i=0;i<itemList.item.length;i++){
+        views.push(
+            <View key = {'item'+i} style={{marginLeft:5,backgroundColor:'green',width:itemWidth,height:itemHeght}}>
+            <Text>{itemList.item[i]}</Text>
+            </View>
+        )
+    }
+    return (
+        <View style={styles.cellStyle}>
+            {views}
         </View>
     );
 }
@@ -122,8 +160,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     cellStyle: {
-        padding: 10,
-        width: (Space.kScreenWidth - 20) / 2,
+        flex: 1,
+        height: itemHeght + 2 * itemSpace,
+        flexDirection: 'row'
     },
     imageStyle: {
         flex: 1,
@@ -144,8 +183,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    rightViewStyle:{
-         flexDirection: 'row',
+    rightViewStyle: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
     }

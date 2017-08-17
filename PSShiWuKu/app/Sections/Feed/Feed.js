@@ -74,7 +74,7 @@ export default class Feed extends Component {
                     let Component = item.controller;
                     return (
                             <Component
-                                key={titles[index]}
+                                key={'view'+titles[index]}
                                 tabLabel={titles[index]}
                                 categoryId={item.categoryId}
                                 navigator={navigator}

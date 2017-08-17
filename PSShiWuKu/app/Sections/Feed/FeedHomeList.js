@@ -16,13 +16,14 @@ import {
 
 import Color from './../../Config/Color';
 import Space from './../../Config/Space';
+import ImageButton from './../../Common/ImageButton';
 
 var dataArr = [];
 var temp = 0
 
 const itemSpace = 10;
 const itemWidth = (Space.kScreenWidth - itemSpace * 3) / 2;
-const itemHeght = 80;
+const itemHeight = 200;
 
 export default class extends Component {
 
@@ -66,7 +67,7 @@ export default class extends Component {
         console.log(info.index);
         temp++;
         return (
-            <View key = {'cell'+info.index} style={{flex:1,height:itemHeght,backgroundColor:'red'}}>
+            <View key = {'cell'+info.index} style={{flex:1,height:itemHeight}}>
                 {
                 <FeedHomeListCell
                     itemList = {info}
@@ -84,9 +85,9 @@ export default class extends Component {
     componentDidMount() {
         // 视图一进来就进行刷新
         this.setState({
-                refreshing: false
-            })
-            // this.requestData()
+            refreshing: false
+        })
+        this.requestData()
     }
 
     // 数据请求
@@ -94,8 +95,8 @@ export default class extends Component {
         fetch('http://food.boohee.com/fb/v1/feeds/category_feed?category=1&page=1')
             .then((response) => response.json())
             .then((json) => {
-                this.handleDataSource(json.feeds);
-                // this.setState({ dataList: json.feeds })
+                let data = this.handleDataSource(json.feeds);
+                this.setState({ dataList: data })
                 // console.log(json);
             })
             .catch((error) => {
@@ -103,30 +104,25 @@ export default class extends Component {
             })
     }
 
-    // 处理数据
+    // 处理数据,将数组分割成两个一组
     handleDataSource(feeds) {
         console.log(feeds);
         for (var i in feeds) {
             var element = feeds[i];
             if (i % 2 == 0) {
-                let data = [];
-                data.push(element);
+               let data = [];
+               for(var j=0;j<2;j++) {  // 次数
+                data.push(feeds[j]);
+               }
+                dataArr.push(data);
+                i=i+2;
             }
         }
+        console.log('---dataArr---'+dataArr);
+        return dataArr;
     }
 }
-/*
- <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}></Image>
-            <View>
-                <Text>{tipTitle}</Text>
-                <Text>{subTitle}</Text>
-            </View>
-            <View style={styles.lineStyle}></View>
-            <View style={styles.bottomViewStyle}>
-                <View style={styles.leftViewStyle}></View>
-                <View style={styles.rightViewStyle}></View>
-            </View>
-*/
+
 const FeedHomeListCell = ({
     imageName,
     tipTitle,
@@ -137,12 +133,29 @@ const FeedHomeListCell = ({
     itemList
 }) => {
     console.log(itemList);
+    console.log('itemList.item = '+ itemList.item);
     let views = [];
     for(let i=0;i<itemList.item.length;i++){
         views.push(
-            <View key = {'item'+i} style={{marginLeft:5,backgroundColor:'green',width:itemWidth,height:itemHeght}}>
-            <Text>{itemList.item[i]}</Text>
+            <View key = {'item'+i} style={{marginLeft:10,backgroundColor:Color.kBgColor,width:itemWidth,height:itemHeight}}>
+                <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}></Image>
+                    <View>
+                        <Text style={styles.titleStyle}>{itemList.item[i].title}</Text>
+                        <Text style={styles.subTitleStyle} numberOfLines={2}>{itemList.item[i].description}</Text>
+                    </View>
+                    <View style={styles.lineStyle}></View>
+                    <View style={styles.bottomViewStyle}>
+                        <View style={styles.leftViewStyle}>
+                            <Image style={{width: 20, height: 20}} source={{uri: itemList.item[i].publisher_avatar}}> </Image>
+                            <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].publisher }</Text>
+                        </View>
+                        <View style={styles.rightViewStyle}>
+                            <Image style={{width: 20, height: 20}} source={require('./../../Images/ic_feed_like.png')}>{itemList.item[i].publisher_avatar}</Image>
+                            <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].like_ct } </Text>
+                        </View>
+                    </View>
             </View>
+
         )
     }
     return (
@@ -161,7 +174,7 @@ const styles = StyleSheet.create({
     },
     cellStyle: {
         flex: 1,
-        height: itemHeght + 2 * itemSpace,
+        height: itemHeight + 2 * itemSpace,
         flexDirection: 'row'
     },
     imageStyle: {
@@ -187,5 +200,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    subTitleStyle: {
+        marginTop: 5,
+        color: 'gray',
+        fontSize: 13
+    },
+    titleStyle: {
+        marginTop: 5,
+        color: 'black',
+        fontSize: 14
     }
 });

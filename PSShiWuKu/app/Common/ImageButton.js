@@ -13,9 +13,9 @@ export default class ImageButton extends Component {
             <TouchableWithoutFeedback onPress={this.props.onPress}>
                 <Image
                     style={this.props.style}
-                    source={this.props.source}
+                    source={{uri: this.props.source}}
                 >
-                <Text>添加文字</Text>
+                <Text>{text}</Text>
                 </Image>
             </TouchableWithoutFeedback>
         )

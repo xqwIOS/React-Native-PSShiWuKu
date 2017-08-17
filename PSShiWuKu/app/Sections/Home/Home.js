@@ -59,7 +59,7 @@ export default class extends Component {
                     <View style={[{ padding: 10 }]}>
                         <Grid data={data} hasLine={false} columnNum={3} />
                     </View>
-                        </ScrollView>
+                    </ScrollView>
             </View>
         );
     }

@@ -15,7 +15,7 @@ import {
 import Color from './../../Config/Color';
 import Space from './../../Config/Space';
 
-export default class extends Component {
+export default class Register extends Component {
 
     static navigationOptions = ({navigation,screenProps}) => ({  
         headerTitle: '注册', 

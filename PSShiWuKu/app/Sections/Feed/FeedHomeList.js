@@ -71,7 +71,8 @@ export default class extends Component {
                 {
                 <FeedHomeListCell
                     itemList = {info}
-                     />}
+                />
+                }
             </View>
 
         )
@@ -107,12 +108,14 @@ export default class extends Component {
     // 处理数据,将数组分割成两个一组
     handleDataSource(feeds) {
         console.log(feeds);
-        for (var i in feeds) {
+        var data = [];
+        var tempData = [];
+        for (let i=0; i< feeds.length;i++) {
             var element = feeds[i];
             if (i % 2 == 0) {
                let data = [];
-               for(var j=0;j<2;j++) {  // 次数
-                data.push(feeds[j]);
+               for(let j=0;j<2;j++, i++) {  // 次数
+                data.push(element);
                }
                 dataArr.push(data);
                 i=i+2;
@@ -120,6 +123,12 @@ export default class extends Component {
         }
         console.log('---dataArr---'+dataArr);
         return dataArr;
+        //  var data = [];
+        // for(var i=0,len=feeds.length;i<len;i+=2){
+        //     data.push(feeds.slice(i,i+2));
+        // }
+        // console.log(data);
+        // return data;
     }
 }
 
@@ -146,11 +155,11 @@ const FeedHomeListCell = ({
                     <View style={styles.lineStyle}></View>
                     <View style={styles.bottomViewStyle}>
                         <View style={styles.leftViewStyle}>
-                            <Image style={{width: 20, height: 20}} source={{uri: itemList.item[i].publisher_avatar}}> </Image>
+                            <Image style={{width: 30, height: 30,borderRadius: 15}} source={{uri: itemList.item[i].publisher_avatar}}></Image>
                             <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].publisher }</Text>
                         </View>
                         <View style={styles.rightViewStyle}>
-                            <Image style={{width: 20, height: 20}} source={require('./../../Images/ic_feed_like.png')}>{itemList.item[i].publisher_avatar}</Image>
+                            <Image style={{width: 20, height: 20}} source={require('./../../Images/ic_feed_like.png')}></Image>
                             <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].like_ct } </Text>
                         </View>
                     </View>

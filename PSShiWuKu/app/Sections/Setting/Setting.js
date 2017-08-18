@@ -7,7 +7,8 @@ import {
     StyleSheet,
     Text,
     View,
-    ListView
+    ListView,
+    TouchableOpacity
 } from 'react-native';
 
 import Color from './../../Config/Color';
@@ -91,16 +92,19 @@ export default class extends Component {
 
 // 具体的每行
     renderRow(rowData, sectionID, rowID, highlightRow) {
+        console.log('rowID = '+ rowID);
         return (
-            <View style={{backgroundColor: 'white'}}>
-                <SettingCell 
-                title={rowData.title}
-                content={rowData.subtitle}
-                style={styles.cellStyle}
-                contentColor={rowData.color}
-            >
-            </SettingCell>
+            <TouchableOpacity onPress={this.clickCell.bind(this, rowID)}>
+                <View style={{backgroundColor: 'white'}}>
+                    <SettingCell 
+                    title={rowData.title}
+                    content={rowData.subtitle}
+                    style={styles.cellStyle}
+                    contentColor={rowData.color}
+                    >
+                    </SettingCell>
             </View>
+            </TouchableOpacity>
         );
     }
 
@@ -112,6 +116,20 @@ export default class extends Component {
         return (
             <Text style={{textAlign: 'center', marginTop: 10}}>食物库V1.0.0</Text>
         );
+    }
+
+    clickCell(rowID) {
+        // alert(rowID);
+        switch (rowID) {
+            // 注意这里要使用''比较,直接数字是不行的
+            case '0':
+                // alert('登录');
+                this.props.navigation.navigate('RegisterScreen');
+                break;
+        
+            default:
+                break;
+        }
     }
 }
 

@@ -66,10 +66,11 @@ const HandleItem = ({
 const styles = StyleSheet.create({
     container: {
         // flex: 1,  // 记住flex和height不能同时使用,否则高度不能实现
-        height: 60,
+        height: 80,
         backgroundColor: Color.kBgColor,
         width: Space.kScreenWidth - 16 * 2,
         marginTop: 10,
+        marginBottom: 10,
         alignItems: 'center',
         flexDirection: 'row',
         marginLeft: 16,

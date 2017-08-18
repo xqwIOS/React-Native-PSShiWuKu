@@ -113,7 +113,7 @@ const FeedKnowledgeCell = ({
                 </View>
             </View>
             <View style={styles.rightViewStyle}>
-                <Image source={{uri: imageName}} style={{backgroundColor: 'red', justifyContent: 'center', alignItems: 'center',flex: 1}}></Image>
+                <Image source={{uri: imageName}} style={{justifyContent: 'center', alignItems: 'center',flex: 1}}></Image>
             </View>
         </View>
     );

@@ -22,6 +22,7 @@ import Setting from './../Sections/Setting/Setting';
 import TabBarItem from './../Common/TabBarItem';
 import Color from './../Config/Color';
 import Register from './../Sections/Login/Register';
+import HomeTypeList from './../Sections/Home/HomeTypeList';
 
 export default class APP extends Component {
 
@@ -190,6 +191,9 @@ const Navigator = StackNavigator({
     },
     RegisterScreen: {
         screen: Register
+    },
+    HomeTypeListScreen: {
+        screen: HomeTypeList
     }
 }, {
     navigationOptions: {

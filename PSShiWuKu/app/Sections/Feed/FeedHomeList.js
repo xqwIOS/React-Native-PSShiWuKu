@@ -11,15 +11,13 @@ import {
     View,
     FlatList,
     Image,
-    TouchableOpacity
+    TouchableOpacity,
+ImageBackground
 } from 'react-native';
 
 import Color from './../../Config/Color';
 import Space from './../../Config/Space';
 import ImageButton from './../../Common/ImageButton';
-
-var dataArr = [];
-var temp = 0
 
 const itemSpace = 10;
 const itemWidth = (Space.kScreenWidth - itemSpace * 3) / 2;
@@ -30,11 +28,7 @@ export default class extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dataList: [
-                ["1", "2"],
-                ["3", "4"],
-                ["5", "6"]
-            ],
+            dataList: [],
             refreshing: false,
         }
 
@@ -64,15 +58,12 @@ export default class extends Component {
     }
 
     renderCell(info) {
-        console.log(info.index);
-        temp++;
         return (
             <View key = {'cell'+info.index} style={{flex:1,height:itemHeight}}>
                 {
                 <FeedHomeListCell
-                    itemList = {info}
-                />
-                }
+                    itemList = {info.item}
+                     />}
             </View>
 
         )
@@ -101,75 +92,50 @@ export default class extends Component {
                 // console.log(json);
             })
             .catch((error) => {
+                console.log(error);
                 alert(error)
             })
     }
 
     // 处理数据,将数组分割成两个一组
     handleDataSource(feeds) {
-        console.log(feeds);
         var data = [];
-        var tempData = [];
-        for (let i=0; i< feeds.length;i++) {
-            var element = feeds[i];
-            if (i % 2 == 0) {
-               let data = [];
-               for(let j=0;j<2;j++, i++) {  // 次数
-                data.push(element);
-               }
-                dataArr.push(data);
-                i=i+2;
-            }
+        for(var i=0,len=feeds.length;i<len;i+=2){
+            data.push(feeds.slice(i,i+2));
         }
-        console.log('---dataArr---'+dataArr);
-        return dataArr;
-        //  var data = [];
-        // for(var i=0,len=feeds.length;i<len;i+=2){
-        //     data.push(feeds.slice(i,i+2));
-        // }
-        // console.log(data);
-        // return data;
+        return data;
     }
 }
 
 const FeedHomeListCell = ({
-    imageName,
-    tipTitle,
-    subTitle,
-    nickImageName,
-    nickName,
-    zanCount,
     itemList
 }) => {
-    console.log(itemList);
-    console.log('itemList.item = '+ itemList.item);
     let views = [];
-    for(let i=0;i<itemList.item.length;i++){
-        views.push(
-            <View key = {'item'+i} style={{marginLeft:10,backgroundColor:Color.kBgColor,width:itemWidth,height:itemHeight}}>
-                <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}></Image>
-                    <View>
-                        <Text style={styles.titleStyle}>{itemList.item[i].title}</Text>
-                        <Text style={styles.subTitleStyle} numberOfLines={2}>{itemList.item[i].description}</Text>
-                    </View>
-                    <View style={styles.lineStyle}></View>
-                    <View style={styles.bottomViewStyle}>
-                        <View style={styles.leftViewStyle}>
-                            <Image style={{width: 30, height: 30,borderRadius: 15}} source={{uri: itemList.item[i].publisher_avatar}}></Image>
-                            <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].publisher }</Text>
-                        </View>
-                        <View style={styles.rightViewStyle}>
-                            <Image style={{width: 20, height: 20}} source={require('./../../Images/ic_feed_like.png')}></Image>
-                            <Text style={{color: 'gray', fontSize: 13}}>{ itemList.item[i].like_ct } </Text>
-                        </View>
-                    </View>
-            </View>
-
-        )
-    }
+    console.log(itemList);
     return (
         <View style={styles.cellStyle}>
-            {views}
+            {itemList.map((item,index) =>(
+                <View key = {'item'+index} style={{marginLeft:10,backgroundColor:Color.kBgColor,width:itemWidth,height:itemHeight}}>
+                    <Image source={{uri: 'http://one.boohee.cn/food/2017/7/11/938C4D36-E264-428C-87A7-CA08F766221E.jpg?imageView2/2/320/640'}} style={styles.imageStyle}/>
+                    <View>
+                        <Text style={styles.titleStyle}>{item.title}</Text>
+                        <Text style={styles.subTitleStyle} numberOfLines={2}>{item.description}</Text>
+                    </View>
+
+                    <View style={styles.lineStyle}/>
+                    <View style={styles.bottomViewStyle}>
+                         <View style={styles.leftViewStyle}>
+                             {item.publisher_avatar === null ? null : <Image style={{width: 20, height: 20}} source={{uri: item.publisher_avatar}}/>}
+                            <Text style={{color: 'gray', fontSize: 13}}>{ item.publisher }</Text>
+                        </View>
+                         <View style={styles.rightViewStyle}>
+                            <Image style={{width: 20, height: 20}} source={require('./../../Images/ic_feed_like.png')}/>
+                            <Text style={{color: 'gray', fontSize: 13}}>{ item.like_ct } </Text>
+                        </View>
+                    </View>
+
+                </View>
+            ))}
         </View>
     );
 }

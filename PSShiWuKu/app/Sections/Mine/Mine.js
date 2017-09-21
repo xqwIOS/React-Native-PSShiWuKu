@@ -68,8 +68,19 @@ export default class extends Component {
         this.props.navigation.navigate('LoginScreen');
     }
 
-    onPressCell() {
-        alert('点击cell');
+    onPressCell(title) {
+        // alert(title);
+        switch (title) {
+            case '我的照片':
+                this.props.navigation.navigate('MyPhotoPageScreen');
+                break;
+            case '我的收藏':
+            this.props.navigation.navigate('MyCollectPageScreen');
+            break;
+    
+            default:
+                break;
+        }
     }
 }
 

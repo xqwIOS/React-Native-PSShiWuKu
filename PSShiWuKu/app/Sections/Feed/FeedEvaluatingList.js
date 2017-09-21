@@ -60,7 +60,9 @@ export default class extends Component {
         console.log(info);
         return (
             <View key = {'cell'+info.index} style={{flex:1,height:200}}>
-                <FeedEvaluatingListCell type={info.item.source} imageName={info.item.background} title={info.item.title} readCount={info.item.tail}>
+                <FeedEvaluatingListCell type={info.item.source} imageName={info.item.background} 
+                                        title={info.item.title} readCount={info.item.tail}
+                                        jumpToDetail={()=>this.jumpToDetail()}>
                 </FeedEvaluatingListCell>
             </View>
 
@@ -93,6 +95,12 @@ export default class extends Component {
                 alert(error)
             })
     }
+
+    jumpToDetail() {
+        // alert('进入详情');
+        // FeedDetailScreen
+        this.props.navigation.navigate('FeedDetailScreen');
+    }
 }
 
 const FeedEvaluatingListCell = ({
@@ -100,16 +108,19 @@ const FeedEvaluatingListCell = ({
     type,
     title,
     readCount,
+    jumpToDetail
 }) => {
     return (
         <View style={styles.cellStyle}>
-            <ImageBackground source={{uri: imageName}}
-                       style={{height: 230}}
-                       resizeMode='cover'>
-            <Text style={styles.textStyle}>{type}</Text>
-            <Text style={[styles.textStyle, {fontSize: 16, marginTop: 50}]}>{title}</Text>
-            <Text style={[styles.textStyle, {marginTop: 60}]}>{readCount}</Text>
-            </ImageBackground>
+            <TouchableOpacity onPress={jumpToDetail}>
+                <ImageBackground source={{uri: imageName}}
+                style={{height: 230}}
+                resizeMode='cover'>
+                <Text style={styles.textStyle}>{type}</Text>
+                <Text style={[styles.textStyle, {fontSize: 16, marginTop: 50}]}>{title}</Text>
+                <Text style={[styles.textStyle, {marginTop: 60}]}>{readCount}</Text>
+                </ImageBackground>
+            </TouchableOpacity>
         </View>
     );
 }

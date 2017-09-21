@@ -23,6 +23,10 @@ import TabBarItem from './../Common/TabBarItem';
 import Color from './../Config/Color';
 import Register from './../Sections/Login/Register';
 import HomeTypeList from './../Sections/Home/HomeTypeList';
+import FeedDetail from './../Sections/Feed/FeedDetail';
+import MyPhotoPage from './../Sections/Mine/MyPhotoPage';
+import MyReceiveZanPage from './../Sections/Mine/ReceiveZanPage';
+import MyCollectPage from './../Sections/Mine/MyCollectPage';
 
 export default class APP extends Component {
 
@@ -194,6 +198,18 @@ const Navigator = StackNavigator({
     },
     HomeTypeListScreen: {
         screen: HomeTypeList
+    },
+    FeedDetailScreen: {
+        screen: FeedDetail
+    },
+    MyPhotoPageScreen: {
+        screen: MyPhotoPage
+    },
+    MyReceiveZanPageScreen: {
+        screen: MyReceiveZanPage
+    },
+    MyCollectPageScreen: {
+        screen: MyCollectPage
     }
 }, {
     navigationOptions: {

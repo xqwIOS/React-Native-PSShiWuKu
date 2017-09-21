@@ -23,36 +23,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
+import { Grid } from 'antd-mobile';
 const PropTypes = require('prop-types');
 
 const TOUCHABLE_ELEMENTS = ['TouchableHighlight', 'TouchableOpacity', 'TouchableWithoutFeedback', 'TouchableNativeFeedback'];
 
 export default class ModalDropdown extends Component {
-  static propTypes = {
-    disabled: PropTypes.bool,
-    defaultIndex: PropTypes.number,
-    defaultValue: PropTypes.string,
-    options: PropTypes.array,
-
-    accessible: PropTypes.bool,
-    animated: PropTypes.bool,
-    showsVerticalScrollIndicator: PropTypes.bool,
-    keyboardShouldPersistTaps: PropTypes.string,
-
-    style: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-    dropdownStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-    dropdownTextStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-    dropdownTextHighlightStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
-
-    adjustFrame: PropTypes.func,
-    renderRow: PropTypes.func,
-    renderSeparator: PropTypes.func,
-
-    onDropdownWillShow: PropTypes.func,
-    onDropdownWillHide: PropTypes.func,
-    onSelect: PropTypes.func
-  };
 
   static defaultProps = {
     disabled: false,
@@ -67,11 +43,6 @@ export default class ModalDropdown extends Component {
   constructor(props) {
     super(props);
 
-    this._button = null;
-    this._buttonFrame = null;
-    this._nextValue = null;
-    this._nextIndex = null;
-
     this.state = {
       disabled: props.disabled,
       accessible: !!props.accessible,
@@ -80,26 +51,6 @@ export default class ModalDropdown extends Component {
       buttonText: props.defaultValue,
       selectedIndex: props.defaultIndex
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    var buttonText = this._nextValue == null ? this.state.buttonText : this._nextValue.toString();
-    var selectedIndex = this._nextIndex == null ? this.state.selectedIndex : this._nextIndex;
-    if (selectedIndex < 0) {
-      selectedIndex = nextProps.defaultIndex;
-      if (selectedIndex < 0) {
-        buttonText = nextProps.defaultValue;
-      }
-    }
-    this._nextValue = null;
-    this._nextIndex = null;
-
-    this.setState({
-      disabled: nextProps.disabled,
-      loading: nextProps.options == null,
-      buttonText: buttonText,
-      selectedIndex: selectedIndex
-    });
   }
 
   render() {
@@ -131,25 +82,6 @@ export default class ModalDropdown extends Component {
   hide() {
     this.setState({
       showDropdown: false
-    });
-  }
-
-  select(idx) {
-    var value = this.props.defaultValue;
-    if (idx == null || this.props.options == null || idx >= this.props.options.length) {
-      idx = this.props.defaultIndex;
-    }
-
-    if (idx >= 0) {
-      value = this.props.options[idx].toString();
-    }
-
-    this._nextValue = value;
-    this._nextIndex = idx;
-
-    this.setState({
-      buttonText: value,
-      selectedIndex: idx
     });
   }
 
@@ -194,7 +126,7 @@ export default class ModalDropdown extends Component {
                                     disabled={!this.state.showDropdown}
                                     onPress={this._onModalPress.bind(this)}>
             <View style={styles.modal}>
-              <View style={[styles.dropdown, this.props.dropdownStyle, frameStyle]}>
+              <View style={{marginTop: 100, flex: 1}}>
                 {this.state.loading ? this._renderLoading() : this._renderDropdown()}
               </View>
             </View>
@@ -262,105 +194,29 @@ export default class ModalDropdown extends Component {
 
   _renderDropdown() {
     return (
-      <ListView style={styles.list}
-                dataSource={this._dataSource}
-                renderRow={this._renderRow.bind(this)}
-                renderSeparator={this.props.renderSeparator || this._renderSeparator.bind(this)}
-                automaticallyAdjustContentInsets={false}
-                showsVerticalScrollIndicator={this.props.showsVerticalScrollIndicator}
-                keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-      />
+      <View style={{flex: 1}}>
+      <View style={styles.gridViewStyle}>
+      {/*注意蚂蚁的这个onClick参数都要写,否则index出不来回事object*/}
+      <Grid data={this.props.options} hasLine={false} columnNum={3} onClick={(el, index) => this.dropdownOnSelect(el,index)}
+          //   renderItem={(item)=> {
+          //       <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          //         <Image source={{uri: item.icon}} style={{width: 40, height: 40}}></Image>
+          //         <Text></Text>
+          //       </View>
+          //   }}
+          />
+      </View>
+      </View>
     );
   }
 
-  get _dataSource() {
-    let ds = new ListView.DataSource({
-      rowHasChanged: (r1, r2) => r1 !== r2
+  dropdownOnSelect(el, index) {
+    console.log(el+ ''+index);
+    this.setState({
+      selectedIndex: index
     });
-    return ds.cloneWithRows(this.props.options);
-  }
-
-  _renderRow(rowData, sectionID, rowID, highlightRow) {
-    let key = `row_${rowID}`;
-    let highlighted = rowID == this.state.selectedIndex;
-    let row = !this.props.renderRow ?
-      (<Text style={[
-        styles.rowText,
-        this.props.dropdownTextStyle,
-        highlighted && styles.highlightedRowText,
-        highlighted && this.props.dropdownTextHighlightStyle
-      ]}
-      >
-        {rowData}
-      </Text>) :
-      this.props.renderRow(rowData, rowID, highlighted);
-    let preservedProps = {
-      key: key,
-      accessible: this.props.accessible,
-      onPress: () => this._onRowPress(rowData, sectionID, rowID, highlightRow),
-    };
-    if (TOUCHABLE_ELEMENTS.find(name => name == row.type.displayName)) {
-      var props = {...row.props};
-      props.key = preservedProps.key;
-      props.onPress = preservedProps.onPress;
-      switch (row.type.displayName) {
-        case 'TouchableHighlight':
-        {
-          return (
-            <TouchableHighlight {...props}>
-              {row.props.children}
-            </TouchableHighlight>
-          );
-        }
-          break;
-        case 'TouchableOpacity':
-        {
-          return (
-            <TouchableOpacity {...props}>
-              {row.props.children}
-            </TouchableOpacity>
-          );
-        }
-          break;
-        case 'TouchableWithoutFeedback':
-        {
-          return (
-            <TouchableWithoutFeedback {...props}>
-              {row.props.children}
-            </TouchableWithoutFeedback>
-          );
-        }
-          break;
-        case 'TouchableNativeFeedback':
-        {
-          return (
-            <TouchableNativeFeedback {...props}>
-              {row.props.children}
-            </TouchableNativeFeedback>
-          );
-        }
-          break;
-        default:
-          break;
-      }
-    }
-    return (
-      <TouchableHighlight {...preservedProps}>
-        {row}
-      </TouchableHighlight>
-    );
-  }
-
-  _onRowPress(rowData, sectionID, rowID, highlightRow) {
-    if (!this.props.onSelect ||
-      this.props.onSelect(rowID, rowData) !== false) {
-      highlightRow(sectionID, rowID);
-      this._nextValue = rowData;
-      this._nextIndex = rowID;
-      this.setState({
-        buttonText: rowData.toString(),
-        selectedIndex: rowID
-      });
+    if(this.props.onSelect) {
+        this.props.onSelect(el, index);
     }
     if (!this.props.onDropdownWillHide ||
       this.props.onDropdownWillHide() !== false) {
@@ -368,14 +224,7 @@ export default class ModalDropdown extends Component {
         showDropdown: false
       });
     }
-  }
-
-  _renderSeparator(sectionID, rowID, adjacentRowHighlighted) {
-    let key = `spr_${rowID}`;
-    return (<View style={styles.separator}
-                  key={key}
-    />);
-  }
+}
 }
 
 const styles = StyleSheet.create({
@@ -400,22 +249,8 @@ const styles = StyleSheet.create({
   loading: {
     alignSelf: 'center'
   },
-  list: {
-    //flexGrow: 1,
-  },
-  rowText: {
-    paddingHorizontal: 6,
-    paddingVertical: 10,
-    fontSize: 11,
-    color: 'gray',
-    backgroundColor: 'white',
-    textAlignVertical: 'center'
-  },
-  highlightedRowText: {
-    color: 'black'
-  },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    backgroundColor: 'lightgray'
-  }
+  gridViewStyle: {
+    // padding: 10
+    flex: 1
+}
 });

@@ -43,7 +43,11 @@ export default class HomeTypeList extends Component {
         },
         headerRight:(
             <View style={{width: 40, height: 40}}>
-                <Text style={{color: 'gray', marginTop: 15}}>全部</Text>
+                <Text style={{color: 'gray', marginTop: 15}}  
+                      onPress={()=> {
+                          alert('点击了全部')
+                        }}
+                >全部</Text>
             </View>
         )   
     }); 
@@ -58,6 +62,18 @@ export default class HomeTypeList extends Component {
         this.keyExtractor = this.keyExtractor.bind(this);
         this.renderCell = this.renderCell.bind(this);
         this.requestData = this.requestData.bind(this);
+    }
+
+    componentWillMount() {
+        
+    }
+        
+    componentDidMount(){
+        this.props.navigation.setParams({navigatePress:this.allAction})
+    }
+
+    allAction() {
+        alert('点击了全部');
     }
 
     render() {

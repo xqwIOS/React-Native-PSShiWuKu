@@ -103,6 +103,7 @@ export default class extends PureComponent {
     // 注册跳转
     registerAction() {
         this.props.navigation.navigate('RegisterScreen');
+        // alert('333');
     }
 }
 

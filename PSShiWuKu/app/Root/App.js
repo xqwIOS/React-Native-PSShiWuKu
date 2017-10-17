@@ -22,6 +22,12 @@ import Setting from './../Sections/Setting/Setting';
 import TabBarItem from './../Common/TabBarItem';
 import Color from './../Config/Color';
 import Register from './../Sections/Login/Register';
+import HomeTypeList from './../Sections/Home/HomeTypeList';
+import FeedDetail from './../Sections/Feed/FeedDetail';
+import MyPhotoPage from './../Sections/Mine/MyPhotoPage';
+import MyReceiveZanPage from './../Sections/Mine/ReceiveZanPage';
+import MyCollectPage from './../Sections/Mine/MyCollectPage';
+import FeedDetailWebView from './../Sections/Feed/FeedDetailWebView';
 
 export default class APP extends Component {
 
@@ -190,6 +196,24 @@ const Navigator = StackNavigator({
     },
     RegisterScreen: {
         screen: Register
+    },
+    HomeTypeListScreen: {
+        screen: HomeTypeList
+    },
+    FeedDetailScreen: {
+        screen: FeedDetail
+    },
+    MyPhotoPageScreen: {
+        screen: MyPhotoPage
+    },
+    MyReceiveZanPageScreen: {
+        screen: MyReceiveZanPage
+    },
+    MyCollectPageScreen: {
+        screen: MyCollectPage
+    },
+    FeedDetailWebViewScreen: {
+        screen: FeedDetailWebView
     }
 }, {
     navigationOptions: {

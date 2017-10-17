@@ -112,9 +112,9 @@ export default class Feed extends Component {
     render() {
         return (
             <View style={styles.container}>
-            {/*<HeaderView cameraAction={this.cameraAction.bind(this)} dropDownAction={this.dropDownAction.bind(this)}></HeaderView>*/}
+            <HeaderView cameraAction={this.cameraAction.bind(this)} dropDownAction={this.dropDownAction.bind(this)}></HeaderView>
                 
-                {/*<ScrollableTabView
+                <ScrollableTabView
                     renderTabBar={() => <FeedCategoryBar tabNames={titles}/>}
                     tabBarPosition='top'
                     scrollWithoutAnimation={false}
@@ -130,8 +130,9 @@ export default class Feed extends Component {
                             />
                         )
                 })}
-                </ScrollableTabView>*/}
-                <DropDown style={{flex: 1}}
+                </ScrollableTabView>
+                {/*
+                    <DropDown style={{flex: 1}}
                     options={data}
                     onSelect={(idx, value) => this.dropdownOnSelect(idx, value)}>
                     <View style={{flexDirection: 'row',height: 64,backgroundColor: 'white',marginTop: 20, justifyContent: 'center',
@@ -142,6 +143,7 @@ export default class Feed extends Component {
                         <Image style={{backgroundColor: 'black', width: 10, height: 10}}></Image>
                     </View>
                 </DropDown>
+                */}
                 </View>
         );
     }

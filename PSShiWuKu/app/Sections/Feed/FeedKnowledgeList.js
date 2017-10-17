@@ -60,11 +60,17 @@ export default class extends Component {
         console.log(info);
         return (
             <View key = {'cell'+info.index} style={{flex:1}}>
-                <FeedKnowledgeCell type={info.item.source} imageName={info.item.images[0]} title={info.item.title} readCount={info.item.tail}>
+                <FeedKnowledgeCell type={info.item.source} imageName={info.item.images[0]} title={info.item.title} readCount={info.item.tail}
+                                   onPress={() => this.onPress()}>
                 </FeedKnowledgeCell>
             </View>
 
         )
+    }
+
+    onPress() {
+        // alert('111');
+        this.props.navigation.navigate('FeedDetailWebViewScreen');
     }
 
     keyExtractor(item, index) {
@@ -100,9 +106,11 @@ const FeedKnowledgeCell = ({
     type,
     title,
     readCount,
+    onPress
 }) => {
     console.log('imageName---'+ imageName);
     return (
+        <TouchableOpacity onPress={onPress}>
         <View style={styles.cellStyle}>
             <View style={styles.leftViewStyle}>
                 <Text style={[styles.textStyle, {fontSize: 16, color: 'black', marginTop: 5, textAlign: 'left'}]}>{title}</Text>
@@ -116,6 +124,7 @@ const FeedKnowledgeCell = ({
                 <Image source={{uri: imageName}} style={{justifyContent: 'center', alignItems: 'center',flex: 1}}></Image>
             </View>
         </View>
+        </TouchableOpacity>
     );
 }
 

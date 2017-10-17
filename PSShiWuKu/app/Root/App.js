@@ -27,6 +27,7 @@ import FeedDetail from './../Sections/Feed/FeedDetail';
 import MyPhotoPage from './../Sections/Mine/MyPhotoPage';
 import MyReceiveZanPage from './../Sections/Mine/ReceiveZanPage';
 import MyCollectPage from './../Sections/Mine/MyCollectPage';
+import FeedDetailWebView from './../Sections/Feed/FeedDetailWebView';
 
 export default class APP extends Component {
 
@@ -210,6 +211,9 @@ const Navigator = StackNavigator({
     },
     MyCollectPageScreen: {
         screen: MyCollectPage
+    },
+    FeedDetailWebViewScreen: {
+        screen: FeedDetailWebView
     }
 }, {
     navigationOptions: {
